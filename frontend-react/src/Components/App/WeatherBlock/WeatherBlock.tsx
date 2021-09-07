@@ -1,14 +1,21 @@
 import React from 'react';
-import {WeatherBlockProps} from "../../../Types";
+import WeatherDayBlock from "../WeatherDayBlock/WeatherDayBlock";
+import HourWeatherBlock from "../HourWeatherBlock/HourWeatherBlock";
 
-
+type WeatherBlockProps = {
+    cityName: string
+}
 
 function WeatherBlock(props: WeatherBlockProps) {
     return (
-        <label>
-            {props.cityName}
-        </label>
-
+        <div className={"WeatherBlock"}>
+            <button/>
+            <div>
+                <WeatherDayBlock cityName={"Brno"}/>
+                <HourWeatherBlock cityName={"Brno"}/>
+            </div>
+            <button/>
+        </div>
     )
 }
 

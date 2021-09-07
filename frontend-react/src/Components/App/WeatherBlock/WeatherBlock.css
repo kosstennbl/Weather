@@ -1,0 +1,4 @@
+.WeatherBlock {
+    display: flex;
+    flex-direction: row;
+}

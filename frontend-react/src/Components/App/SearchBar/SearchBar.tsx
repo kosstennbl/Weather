@@ -1,7 +1,8 @@
 import React from 'react';
-import {SearchBarProps} from "../../../Types";
 
+type SearchBarProps = {
 
+}
 
 function SearchBar(props: SearchBarProps) {
     return (

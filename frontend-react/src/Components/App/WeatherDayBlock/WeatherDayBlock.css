@@ -1,0 +1,14 @@
+.weatherDayBlock {
+    border: black solid 2px;
+}
+
+.dayForecastsContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.dayForecasts {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+}
