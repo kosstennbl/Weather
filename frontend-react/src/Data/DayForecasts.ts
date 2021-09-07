@@ -1,8 +1,8 @@
-import {DayInfo, WeatherSource} from "../Types";
+import {DayInfo, SourceName} from "../Types";
 
-export function getDayForecasts(sourceId: number): DayInfo[]|null {
-    switch (sourceId) {
-        case 0:
+export function getDayForecasts(source: SourceName): DayInfo[]| null {
+    switch (source) {
+        case "weather.com":
             return [{
                 date: "07.09",
                 weekday: "tuesday",
@@ -14,7 +14,7 @@ export function getDayForecasts(sourceId: number): DayInfo[]|null {
                 midTemp: 23,
                 rainProb: 17
             }]
-        case 1:
+        case "somethingRandom":
             return [{
                 date: "07.09",
                 weekday: "tuesday",

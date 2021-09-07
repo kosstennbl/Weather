@@ -1,0 +1,10 @@
+.HourWeather {
+    display: flex;
+    flex-direction: row;
+    border: black solid 1px;
+    margin: 0.3rem 0
+}
+
+.HourWeatherPart {
+    width: 20%
+}

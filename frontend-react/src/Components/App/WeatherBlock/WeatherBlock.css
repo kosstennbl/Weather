@@ -2,3 +2,12 @@
     display: flex;
     flex-direction: row;
 }
+
+.WeatherContainer {
+    flex-grow: 10;
+    width: 80%
+}
+
+.ChangeSourceButton {
+    flex-grow: 0.5;
+}

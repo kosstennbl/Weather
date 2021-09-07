@@ -1,5 +1,5 @@
 import React from 'react';
-import {DayInfo} from "../../../../Types";
+import {DayInfo} from "../../../../../Types";
 import "./DayWeather.css"
 
 type DayWeatherProps = {

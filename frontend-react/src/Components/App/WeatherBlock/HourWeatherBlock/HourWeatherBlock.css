@@ -1,0 +1,9 @@
+.HourWeatherBlock {
+    border: black solid 1px;
+    border-top: 0;
+}
+
+.hourForecasts {
+    margin-left: -2.45rem;
+    list-style: none;
+}

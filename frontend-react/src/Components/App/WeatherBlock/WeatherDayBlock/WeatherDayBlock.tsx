@@ -1,24 +1,24 @@
 import React, {useEffect, useState} from 'react';
-import {DayInfo, WeatherSource} from "../../../Types";
-import {getDayForecasts} from "../../../Data/DayForecasts";
+import {DayInfo, WeatherSource} from "../../../../Types";
+import {getDayForecasts} from "../../../../Data/DayForecasts";
 import DayWeather from "./DayWeather/DayWeather";
 import "./WeatherDayBlock.css"
-import {getSourceById} from "../../../Data/Sources";
+
 
 type WeatherDayBlockProps = {
     cityName: string
+    weatherSource: WeatherSource
 }
 
 function WeatherDayBlock(props: WeatherDayBlockProps) {
 
-    let [sourceId, setSourceId] = useState<number>(0)
     let [dayForecasts, setDayForecasts] = useState<DayInfo[] | null>(null)
-    useEffect(() => {setDayForecasts(getDayForecasts(sourceId))}, [sourceId])
+    useEffect(() => {setDayForecasts(getDayForecasts(props.weatherSource.name))}, [props.weatherSource.name])
     return (
         <div className={"weatherDayBlock"}>
-            <label>
-                Weather for {props.cityName} from {getSourceById(sourceId).name}
-            </label>
+            <p>
+                Weather for {props.cityName} from {props.weatherSource.name}
+            </p>
             {dayForecasts
                 ? <ul className={"dayForecasts"}>
                     {

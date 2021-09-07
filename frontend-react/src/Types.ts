@@ -6,10 +6,21 @@ export type DayInfo = {
 }
 
 export type HourInfo = {
-
+    dateTime: string
+    temperature: number
+    rainProb: number
+    windSpeed: number
 }
 
 export type WeatherSource = {
-    name: string
+    name: SourceName
     address: string
 }
+
+export type SourceName = "weather.com" | "somethingRandom"
+
+export type SourceAction = {
+    type: SourceActionType
+}
+
+export type SourceActionType = "next" | "previous"
