@@ -11,7 +11,9 @@ type HourWeatherBlockProps = {
 
 function HourWeatherBlock(props: HourWeatherBlockProps) {
     let [hourForecasts, setHourForecasts] = useState<HourInfo[] | null>(null)
-    useEffect(() => {setHourForecasts(getHourForecasts(props.weatherSource.name))}, [props.weatherSource.name])
+    useEffect(() => {
+        setHourForecasts(getHourForecasts(props.weatherSource.name));
+    }, [props.weatherSource.name])
     return (
         <div className={"HourWeatherBlock"}>
             <span>
