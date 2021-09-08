@@ -2,7 +2,7 @@ import {HourInfo, SourceName} from "../Types";
 
 export function getHourForecasts(source: SourceName): HourInfo[]| null {
     switch (source) {
-        case "weather.com": return [
+        case "tomorrow": return [
             {dateTime: "08.09 18:00",
              temperature: 20,
              rainProb: 3,

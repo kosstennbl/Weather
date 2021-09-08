@@ -1,7 +1,7 @@
 import {SourceAction, WeatherSource} from "../Types";
 
 const sources: WeatherSource[] = [
-    {name: "weather.com",
+    {name: "tomorrow",
      address: "weather.com/..."},
     {name: "somethingRandom",
      address: "abracadabra/"}]

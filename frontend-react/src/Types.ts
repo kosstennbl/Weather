@@ -12,12 +12,17 @@ export type HourInfo = {
     windSpeed: number
 }
 
+export type WeatherData = {
+    dayInfos: DayInfo[]
+    hourInfos: HourInfo[]
+}
+
 export type WeatherSource = {
     name: SourceName
     address: string
 }
 
-export type SourceName = "weather.com" | "somethingRandom"
+export type SourceName = "tomorrow" | "somethingRandom"
 
 export type SourceAction = {
     type: SourceActionType

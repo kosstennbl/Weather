@@ -2,7 +2,7 @@ import {DayInfo, SourceName} from "../Types";
 
 export function getDayForecasts(source: SourceName): DayInfo[]| null {
     switch (source) {
-        case "weather.com":
+        case "tomorrow":
             return [{
                 date: "07.09",
                 weekday: "tuesday",
