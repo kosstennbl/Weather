@@ -1,8 +1,6 @@
 import {DayInfo, HourInfo, WeatherData} from "../../Types";
 
-function getRawData(callback: (data: any) => void): any {
-    let callbackRan = false
-
+function getRawData(): any {
     let dateNow = new Date(Date.now() + 2 * (10*60*60))
     let startTime: string = dateNow.toISOString()
     let dateTo = new Date(Date.now() + 5 * (1000*60*60*24) + 2 * (10*60*60))
@@ -14,23 +12,21 @@ function getRawData(callback: (data: any) => void): any {
     let units: string = "metric"
     let timezone: string = "Europe/Prague"
     fetch(`https://data.climacell.co/v4/timelines?apikey=${apikey}&location=${location}&fields=${fields}&startTime=${startTime}&endTime=${endTime}&timesteps=${timeSteps}&units=${units}&timezone=${timezone}`)
-        .then(res => res.json())
+        .then((res) => {
+            console.log(res.status)
+            return res.json()
+        })
         .then((result) => {
-            callback(result)
-            callbackRan = true
+            return(result)
         }, (error) => {
             console.log(error)
-            callback(null)
-            callbackRan = true
+            return null
         });
-    if (!callbackRan) {
-        callback(null)
-    }
+    return null;
 }
 
 export function getWeatherData(): WeatherData {
-    let raw
-    getRawData((data) => {raw = data})
+    let raw = getRawData()
     if (raw == null) {return {dayInfos: [], hourInfos: []}}
     let hourInfos = raw.data.timelines[0].intervals.slice(0, 48).map((interval: any) => {
         let date: Date = new Date(interval.startTime)
@@ -49,13 +45,31 @@ export function getWeatherData(): WeatherData {
         let date: Date = new Date(interval.startTime)
         let monthDay = date.getDate();
         let month = date.getMonth();
+        let weekday = date.getDay();
+
         let dayInfo: DayInfo = {
             date: `${monthDay}.${month}`,
             midTemp: interval.values.temperature,
             rainProb: interval.values.precipitationProbability,
-            weekday: "MO" //TODO
+            weekday: getDayOfWeekName(weekday)
         }
         return dayInfo
     })
+    return {
+        hourInfos: hourInfos,
+        dayInfos: dayInfos
+    }
+}
 
+function getDayOfWeekName(day: number): string {
+    switch(day) {
+        case 0: return "Sun"
+        case 1: return "Mon"
+        case 2: return "Tue"
+        case 3: return "Wed"
+        case 4: return "Thu"
+        case 5: return "Fri"
+        case 6: return "Sat"
+        default: return "ERR"
+    }
 }

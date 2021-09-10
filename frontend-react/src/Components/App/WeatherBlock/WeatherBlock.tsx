@@ -4,6 +4,7 @@ import HourWeatherBlock from "./HourWeatherBlock/HourWeatherBlock";
 import {getSourceById, sourcesReducer} from "../../../Data/Sources";
 import "./WeatherBlock.css"
 import {WeatherData} from "../../../Types";
+import {getWeatherDataBySource} from "../../../Data/WeatherDataForecast";
 
 type WeatherBlockProps = {
     cityName: string
@@ -12,18 +13,22 @@ type WeatherBlockProps = {
 function WeatherBlock(props: WeatherBlockProps) {
     let [sourceId, dispatchSourceId] = useReducer(sourcesReducer, 0)
     let [weatherData, setWeatherData] = useState<WeatherData>({dayInfos: [], hourInfos: []})
-    let source = getSourceById(sourceId)
     useEffect(() => {
-        setWeatherData()
-    })
+        let wData = getWeatherDataBySource(getSourceById(sourceId).name)
+        setWeatherData(wData)
+        console.log(wData)
+    }, [sourceId])
     return (
         <div className={"WeatherBlock"}>
             <button onClick={() => dispatchSourceId({type: "previous"})} className={"ChangeSourceButton"}>
                 {"<"}
             </button>
             <div className={"WeatherContainer"}>
-                <WeatherDayBlock cityName={props.cityName} weatherSource={source}/>
-                <HourWeatherBlock cityName={props.cityName} weatherSource={source}/>
+                <p>
+                    Weather for {props.cityName} from {getSourceById(sourceId).name}
+                </p>
+                <WeatherDayBlock cityName={props.cityName} dayInfos={weatherData.dayInfos}/>
+                <HourWeatherBlock cityName={props.cityName} hourInfos={weatherData.hourInfos}/>
             </div>
             <button onClick={() => dispatchSourceId({type: "next"})} className={"ChangeSourceButton"}>
                 {">"}

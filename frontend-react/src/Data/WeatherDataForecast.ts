@@ -1,12 +1,13 @@
 import {SourceName, WeatherData} from "../Types";
-import {getWeatherData} from "./tommorow.io/API";
+import {getWeatherData as tomorrowGetData} from "./tommorow.io/API";
 
+const tomorrowIoData: WeatherData = tomorrowGetData()
 
-export async function getWetherDataBySource(source: SourceName): Promise<WeatherData> {
+export function getWeatherDataBySource(source: SourceName): WeatherData {
     switch (source) {
         case "tomorrow":
-            let data = getWeatherData()
-            return data
-    
+            return tomorrowIoData
+        case "somethingRandom":
+            return {dayInfos: [], hourInfos: []}
     }
 }
