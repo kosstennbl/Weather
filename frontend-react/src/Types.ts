@@ -22,7 +22,7 @@ export type WeatherSource = {
     address: string
 }
 
-export type SourceName = "tomorrow" | "somethingRandom"
+export type SourceName = "tomorrow.io" | "somethingRandom"
 
 export type SourceAction = {
     type: SourceActionType

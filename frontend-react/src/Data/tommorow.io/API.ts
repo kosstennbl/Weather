@@ -1,6 +1,10 @@
 import {DayInfo, HourInfo, WeatherData} from "../../Types";
 
-function getRawData(): any {
+
+
+
+
+function getRawData(callback: (raw: any) => void): void {
     let dateNow = new Date(Date.now() + 2 * (10*60*60))
     let startTime: string = dateNow.toISOString()
     let dateTo = new Date(Date.now() + 5 * (1000*60*60*24) + 2 * (10*60*60))
@@ -13,52 +17,61 @@ function getRawData(): any {
     let timezone: string = "Europe/Prague"
     fetch(`https://data.climacell.co/v4/timelines?apikey=${apikey}&location=${location}&fields=${fields}&startTime=${startTime}&endTime=${endTime}&timesteps=${timeSteps}&units=${units}&timezone=${timezone}`)
         .then((res) => {
-            console.log(res.status)
             return res.json()
         })
         .then((result) => {
-            return(result)
+            callback(result)
         }, (error) => {
             console.log(error)
-            return null
+            callback(null)
         });
-    return null;
 }
 
-export function getWeatherData(): WeatherData {
-    let raw = getRawData()
-    if (raw == null) {return {dayInfos: [], hourInfos: []}}
-    let hourInfos = raw.data.timelines[0].intervals.slice(0, 48).map((interval: any) => {
-        let date: Date = new Date(interval.startTime)
-        let hours = date.getHours();
-        let monthDay = date.getDate();
-        let month = date.getMonth();
-        let hourInfo: HourInfo = {
-            dateTime: `${monthDay}.${month} ${hours}`,
-            temperature: interval.values.temperature,
-            rainProb: interval.values.precipitationProbability,
-            windSpeed: interval.values.windSpeed
+export function getWeatherData(callback: (data: WeatherData) => void): void {
+    getRawData((raw: any) => {
+        if (raw == null) {
+            return {dayInfos: [], hourInfos: []}
         }
-        return hourInfo
-    })
-    let dayInfos = raw.data.timelines[1].intervals.map((interval: any) => {
-        let date: Date = new Date(interval.startTime)
-        let monthDay = date.getDate();
-        let month = date.getMonth();
-        let weekday = date.getDay();
+        let hourInfos = raw.data.timelines[0].intervals.slice(0, 48).map((interval: any) => {
+            let date: Date = new Date(interval.startTime)
+            let hours = date.getHours();
+            let monthDay = date.getDate();
+            let month = date.getMonth();
+            let hourInfo: HourInfo = {
+                dateTime: `${correctDate(monthDay)}.${correctDate(month + 1)} ${correctDate(hours)}:00`,
+                temperature: Math.round(interval.values.temperature),
+                rainProb: interval.values.precipitationProbability,
+                windSpeed: interval.values.windSpeed
+            }
+            return hourInfo
+        })
+        let dayInfos = raw.data.timelines[1].intervals.map((interval: any) => {
+            let date: Date = new Date(interval.startTime)
+            let monthDay = date.getDate();
+            let month = date.getMonth();
+            let weekday = date.getDay();
 
-        let dayInfo: DayInfo = {
-            date: `${monthDay}.${month}`,
-            midTemp: interval.values.temperature,
-            rainProb: interval.values.precipitationProbability,
-            weekday: getDayOfWeekName(weekday)
+            let dayInfo: DayInfo = {
+                date: `${correctDate(monthDay)}.${correctDate(month + 1)}`,
+                midTemp: Math.round(interval.values.temperature),
+                rainProb: interval.values.precipitationProbability,
+                weekday: getDayOfWeekName(weekday)
+            }
+            return dayInfo
+        })
+        let weatherData: WeatherData = {
+            hourInfos: hourInfos,
+            dayInfos: dayInfos
         }
-        return dayInfo
+        callback(weatherData)
     })
-    return {
-        hourInfos: hourInfos,
-        dayInfos: dayInfos
-    }
+
+
+
+}
+
+function correctDate(number: number): string {
+    return `${number < 10 ? "0" : "" }${number}`
 }
 
 function getDayOfWeekName(day: number): string {
